@@ -1,6 +1,6 @@
 namespace build.DeploymentSdk
 {
-    public class ChangeDirectoryStep : Step
+    public class ChangeDirectoryStep : IStep
     {
         private string directory;
 

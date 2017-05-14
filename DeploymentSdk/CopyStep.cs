@@ -1,6 +1,6 @@
 namespace build.DeploymentSdk
 {
-    public class CopyStep : Step
+    public class CopyStep : IStep
     {
         private string source;
         private string destination;

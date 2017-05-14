@@ -9,7 +9,7 @@ namespace build.DeploymentSdk
 
         public IDeployment Call(string program, string args, int tries = 0)
         {
-            script.Add(new Step(program, args, tries));
+            script.Add(new CmdStep(program, args, tries));
             return this;
         }
 

@@ -1,7 +1,7 @@
 namespace build.DeploymentSdk
 {
-    public class PublishStep : Step
+    public class PublishStep : IStep
     {
-        
+
     }
 }
