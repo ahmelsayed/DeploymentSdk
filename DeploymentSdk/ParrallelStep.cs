@@ -10,5 +10,10 @@ namespace build.DeploymentSdk
         {
             this.calls = calls;
         }
+
+        public IRun Run()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace build.DeploymentSdk
 {
     public class CopyStep : IStep
@@ -9,6 +11,11 @@ namespace build.DeploymentSdk
         {
             this.source = source;
             this.destination = destination;
+        }
+
+        public IRun Run()
+        {
+            throw new NotImplementedException();
         }
     }
 }

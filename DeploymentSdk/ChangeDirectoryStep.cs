@@ -1,3 +1,5 @@
+using System;
+
 namespace build.DeploymentSdk
 {
     public class ChangeDirectoryStep : IStep
@@ -7,6 +9,11 @@ namespace build.DeploymentSdk
         public ChangeDirectoryStep(string directory)
         {
             this.directory = directory;
+        }
+
+        public IRun Run()
+        {
+            throw new NotImplementedException();
         }
     }
 }
