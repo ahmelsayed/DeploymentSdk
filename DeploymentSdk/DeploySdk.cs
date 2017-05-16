@@ -1,6 +1,4 @@
-using build.DeploymentSdk;
-
-namespace build
+namespace Deploy.DeploymentSdk
 {
     public static class DeploySdk
     {

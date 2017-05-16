@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
-namespace build.DeploymentSdk
+namespace Deploy.DeploymentSdk
 {
     internal class Executable
     {
@@ -25,6 +25,7 @@ namespace build.DeploymentSdk
 
         public int Run(Action<string> outputCallback = null, Action<string> errorCallback = null)
         {
+            StaticLogger.WriteLine("In Run for " + _exeName + " " + _arguments);
             var processInfo = new ProcessStartInfo
             {
                 FileName = _exeName,
@@ -34,7 +35,7 @@ namespace build.DeploymentSdk
                 RedirectStandardError = _streamOutput,
                 RedirectStandardInput = _streamOutput,
                 RedirectStandardOutput = _streamOutput,
-                WorkingDirectory = Environment.CurrentDirectory
+                WorkingDirectory = System.IO.Directory.GetCurrentDirectory()
             };
 
             Process process = null;
@@ -68,6 +69,7 @@ namespace build.DeploymentSdk
                 process.EnableRaisingEvents = true;
             }
             process.WaitForExit();
+            StaticLogger.WriteLine("Done with " + _exeName + " " + _arguments + ", with exitCode: " + process.ExitCode);
             return process.ExitCode;
         }
     }

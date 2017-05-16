@@ -1,6 +1,6 @@
 using System;
 
-namespace build.DeploymentSdk
+namespace Deploy.DeploymentSdk
 {
     public class ChangeDirectoryStep : IStep
     {
@@ -8,12 +8,13 @@ namespace build.DeploymentSdk
 
         public ChangeDirectoryStep(string directory)
         {
-            this.directory = directory;
+            this.directory = Environment.ExpandEnvironmentVariables(directory);
         }
 
         public IRun Run()
         {
-            throw new NotImplementedException();
+            System.IO.Directory.SetCurrentDirectory(directory);
+            return new CompletedRun();
         }
     }
 }

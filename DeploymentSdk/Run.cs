@@ -2,30 +2,64 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
-namespace build.DeploymentSdk
+namespace Deploy.DeploymentSdk
 {
     internal class Run : IRun
     {
-        private readonly IEnumerable<IStep> _script;
+        private readonly IEnumerable<(IStep step, bool stopOnError)> _script;
+        private readonly Action _onFail;
+        private readonly Action _onSuccess;
         private readonly Stopwatch _stopwatch;
+        private readonly StringBuilder _stringBuilder;
+        public string Logs => _stringBuilder.ToString();
 
-        public Run() : this(Enumerable.Empty<IStep>())
+        public Run() : this(Enumerable.Empty<(IStep, bool)>())
         {
         }
 
-        public Run(IEnumerable<IStep> script)
+        public Run(IStep step, bool stopOnError) : this (new [] { (step, stopOnError )})
+        {
+        }
+
+        public Run(IEnumerable<(IStep step, bool stopOnError)> script, Action onSuccess = null, Action onFail = null)
         {
             this._script = script;
             this._stopwatch = new Stopwatch();
+            this._stringBuilder = new StringBuilder();
+            this._onFail = onFail;
+            this._onSuccess = onSuccess;
+            DoRun();
         }
 
-        internal void Start()
+        private void DoRun()
+        {
+            if (this._script.Any())
+            {
+                Start();
+                foreach((var step, var stopOnError) in _script)
+                {
+                    var result = step.Run();
+                    if (result is FaultedRun && stopOnError)
+                    {
+                        this._onFail?.Invoke();
+                        End();
+                        return;
+                    }
+                }
+                this._onSuccess?.Invoke();
+                End();
+                return;
+            }
+        }
+
+        public void Start()
         {
             this._stopwatch.Start();
         }
 
-        internal void End()
+        public void End()
         {
             this._stopwatch.Stop();
         }

@@ -1,21 +1,26 @@
 using System;
 
-namespace build.DeploymentSdk
+namespace Deploy.DeploymentSdk
 {
-    public class CopyStep : IStep
+    public class CopyStep : CmdStep
     {
         private string source;
         private string destination;
 
-        public CopyStep(string source, string destination)
+        public CopyStep(string source, string destination, int tries = 1)
+            : base("ROBOCOPY", $"\"{source}\" \"{destination}\" /E /IS", tries)
         {
             this.source = source;
             this.destination = destination;
         }
 
-        public IRun Run()
+        public override IRun Run()
         {
-            throw new NotImplementedException();
+            var run = new Run();
+            var statusCode = base.InternalRun(run);
+            return statusCode > 3
+                ? new FaultedRun(run)
+                : run;
         }
     }
 }

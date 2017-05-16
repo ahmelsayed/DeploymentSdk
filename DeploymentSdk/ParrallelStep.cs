@@ -1,6 +1,6 @@
 using System;
 
-namespace build.DeploymentSdk
+namespace Deploy.DeploymentSdk
 {
     public class ParallelStep : IStep
     {
@@ -13,7 +13,8 @@ namespace build.DeploymentSdk
 
         public IRun Run()
         {
-            throw new NotImplementedException();
+            var parallelDeployment = new ParallelDeployment();
+            return calls(parallelDeployment).Run();
         }
     }
 }

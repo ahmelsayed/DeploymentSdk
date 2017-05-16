@@ -1,4 +1,4 @@
-namespace build.DeploymentSdk
+namespace Deploy.DeploymentSdk
 {
     internal class FaultedRun : Run
     {

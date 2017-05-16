@@ -1,6 +1,6 @@
 using System;
 
-namespace build
+namespace Deploy.DeploymentSdk
 {
     public interface IParallelDeployment : IDeployment
     {
