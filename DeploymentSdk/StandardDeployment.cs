@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Deploy.DeploymentSdk;
 
 namespace Deploy.DeploymentSdk
@@ -45,7 +46,7 @@ namespace Deploy.DeploymentSdk
             return this;
         }
 
-        public IDeployment ParallelCall(Func<IParallelDeployment, IDeployment> calls)
+        public IDeployment ParallelCall(Func<IDeployment, IDeployment> calls)
         {
             script.Add((new ParallelStep(calls), true));
             return this;
@@ -57,9 +58,22 @@ namespace Deploy.DeploymentSdk
             return this;
         }
 
-        public virtual IRun Run()
+        public virtual RunOutcome Run()
         {
-            return new Run(script, this._onSuccess, this._onFail);
+            if (script.Any())
+            {
+                foreach ((var step, var stopOnError) in script)
+                {
+                    var result = step.Run();
+                    if (result == RunOutcome.Failed && stopOnError)
+                    {
+                        this._onFail?.Invoke();
+                        return RunOutcome.Failed;
+                    }
+                }
+                this._onSuccess?.Invoke();
+            }
+            return RunOutcome.Succeeded;
         }
     }
 }

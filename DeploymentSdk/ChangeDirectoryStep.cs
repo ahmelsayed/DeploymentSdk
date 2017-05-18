@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace Deploy.DeploymentSdk
 {
@@ -11,10 +12,10 @@ namespace Deploy.DeploymentSdk
             this.directory = Environment.ExpandEnvironmentVariables(directory);
         }
 
-        public IRun Run()
+        public RunOutcome Run()
         {
-            System.IO.Directory.SetCurrentDirectory(directory);
-            return new CompletedRun();
+            Directory.SetCurrentDirectory(directory);
+            return RunOutcome.Succeeded;
         }
     }
 }

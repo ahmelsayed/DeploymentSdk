@@ -15,26 +15,20 @@ namespace Deploy.DeploymentSdk
             this._tries = tries;
         }
 
-        public virtual IRun Run()
+        public virtual RunOutcome Run()
         {
-            var run = new Run();
-            var statusCode = InternalRun(run);
+            var statusCode = InternalRun();
             return statusCode != 0
-                ? new FaultedRun(run)
-                : run;
+                ? RunOutcome.Failed
+                : RunOutcome.Succeeded;
         }
 
-        protected int InternalRun(IRun run = null)
+        protected int InternalRun()
         {
             var program = Environment.ExpandEnvironmentVariables(this._program);
             var args = Environment.ExpandEnvironmentVariables(this._args);
-
             var executable = new Executable("cmd", $"/c \"{program} {args}\"", streamOutput: true);
-
-            run?.Start();
             var statusCode = executable.Run(StaticLogger.WriteLine, StaticLogger.WriteErrorLine);
-            run?.End();
-
             return statusCode;
         }
     }

@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 
 namespace Deploy.DeploymentSdk
 {
@@ -35,7 +34,7 @@ namespace Deploy.DeploymentSdk
                 RedirectStandardError = _streamOutput,
                 RedirectStandardInput = _streamOutput,
                 RedirectStandardOutput = _streamOutput,
-                WorkingDirectory = System.IO.Directory.GetCurrentDirectory()
+                WorkingDirectory = Directory.GetCurrentDirectory()
             };
 
             Process process = null;

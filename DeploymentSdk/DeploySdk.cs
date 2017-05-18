@@ -2,9 +2,6 @@ namespace Deploy.DeploymentSdk
 {
     public static class DeploySdk
     {
-        public static IDeployment StartOnlyProceedOnSuccess()
-        {
-            return new StandardDeployment();
-        }
+        public static IDeployment StandardDeployment => new StandardDeployment();
     }
 }

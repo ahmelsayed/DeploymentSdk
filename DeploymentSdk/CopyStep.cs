@@ -14,13 +14,12 @@ namespace Deploy.DeploymentSdk
             this.destination = destination;
         }
 
-        public override IRun Run()
+        public override RunOutcome Run()
         {
-            var run = new Run();
-            var statusCode = base.InternalRun(run);
+            var statusCode = base.InternalRun();
             return statusCode > 3
-                ? new FaultedRun(run)
-                : run;
+                ? RunOutcome.Failed
+                : RunOutcome.Succeeded;
         }
     }
 }

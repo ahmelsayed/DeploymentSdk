@@ -4,17 +4,16 @@ namespace Deploy.DeploymentSdk
 {
     public class ParallelStep : IStep
     {
-        private Func<IParallelDeployment, IDeployment> calls;
+        private Func<IDeployment, IDeployment> calls;
 
-        public ParallelStep(Func<IParallelDeployment, IDeployment> calls)
+        public ParallelStep(Func<IDeployment, IDeployment> calls)
         {
             this.calls = calls;
         }
 
-        public IRun Run()
+        public RunOutcome Run()
         {
-            var parallelDeployment = new ParallelDeployment();
-            return calls(parallelDeployment).Run();
+            return calls(new ParallelDeployment()).Run();
         }
     }
 }

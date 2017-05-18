@@ -13,6 +13,7 @@ namespace Deploy
         {
             lock(_lock)
             {
+                message = $"[{DateTimeOffset.UtcNow}] {message}";
                 Console.WriteLine(message);
                _sb.AppendLine(Cut(message));
             }
@@ -22,6 +23,7 @@ namespace Deploy
         {
             lock(_lock)
             {
+                message = $"[{DateTimeOffset.UtcNow}] ERROR: {message}";
                 Console.Error.WriteLine(message);
                 _sb.AppendLine(Cut(message));
             }

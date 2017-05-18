@@ -13,23 +13,19 @@ namespace Deploy.DeploymentSdk
             this._name = name ?? "Unnamed action step.";
         }
 
-        public IRun Run()
+        public RunOutcome Run()
         {
-            var run = new Run();
             try
             {
                 StaticLogger.WriteLine($"Starting step: {this._name}");
-                run.Start();
                 this._run();
-                run.End();
                 StaticLogger.WriteLine($"Finished step: {this._name}");
-                return run;
+                return RunOutcome.Succeeded;
             }
             catch (Exception e)
             {
                 StaticLogger.WriteErrorLine($"Error in step: {this._name}, error: {e.ToString()}");
-                run.End();
-                return new FaultedRun(run);
+                return RunOutcome.Failed;
             }
         }
     }

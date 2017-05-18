@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Deploy.DeploymentSdk;
 using MailKit.Net.Smtp;
 using MimeKit;
 
@@ -28,6 +27,7 @@ namespace Deploy.Helpers
             message.To.AddRange(DeploySettings
                 .ToEmailList
                 .Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(a => a.Trim())
                 .Select(alias => $"{alias}@microsoft.com")
                 .Select(e => new MailboxAddress(e)));
             message.Subject = subject;
